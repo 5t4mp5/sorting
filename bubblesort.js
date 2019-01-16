@@ -1,18 +1,26 @@
-function bubbleSort(arr){
-  let swapped = false;
+function bubbleSort(arr, fn = (a, b) => (a < b ? -1 : 1)) {
+  if (!Array.isArray(arr)) {
+    return "this is not an array";
+  }
 
-  do {
-    //let current = arr[0];
-    swapped = false;
-    for(let i = 0; i < arr.length - 1; i++){
-      if(arr[i] > arr[i+1]){
-        const t= arr[i]
-        arr[i] =  arr[i+1];
-        arr[i + 1] = t;
-        swapped = true;
-      }
+  let arrCopy = arr.slice();
+
+  let sorted = true;
+
+  for (let i = 0; i < arrCopy.length - 1; i++) {
+    const current = arrCopy[i];
+    const next = arrCopy[i + 1];
+
+    if (fn(current, next) === 1) {
+      sorted = false;
+      arrCopy[i] = next;
+      arrCopy[i + 1] = current;
     }
-  }while(swapped === true);
-  return arr;
+  }
 
+  if (!sorted) {
+    return bubbleSort(arrCopy.slice(0, -1), fn).concat(arrCopy.slice(-1));
+  }
+
+  return arrCopy;
 }
