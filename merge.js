@@ -17,7 +17,7 @@ function merge(left, right, fn = (a,b) => a < b ? -1 : 1){
   return merged;
 }
 
-function mergeSort(arr, fn){
+function mergeSort(arr){
   if(arr.length <= 1){
     return arr;
   }
@@ -27,6 +27,5 @@ function mergeSort(arr, fn){
   const left = mergeSort(splitArrs[0]);
   const right = mergeSort(splitArrs[1]);
 
-  return merge(mergeSort(left), mergeSort(right), fn);
-
+  return merge(left, right);
 }
