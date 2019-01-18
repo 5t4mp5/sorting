@@ -1,27 +1,47 @@
 describe('Bubble Sort', function(){
-  it('handles an empty array', function(){
-    expect( bubbleSort([]) ).toEqual( [] );
+  it('is a function', () =>{
+    expect(typeof bubbleSort).toEqual('function');
   });
 
-  it('sorts a 3 int array', () => {
-    expect(bubbleSort([3, 1, 2])).toEqual([1,2,3]);
+  it('returns an array', () =>{
+    expect(Array.isArray(bubbleSort([1, 2]))).toEqual(true);
   });
 
-  it('sorts a long array', () =>{
-
-    expect(bubbleSort([1,3,4,6,5,2, 76, 22, 34, 11, 109] )).toEqual([1,2,3,4,5,6,11,22,34,76,109]);
+  it('returns an empty array if given an empty array', () => {
+    expect(bubbleSort([])).toEqual([]);
   });
-});
 
-describe('customBubble', () => {
-  it('sorts with a custom func', () =>{
-    var arrToSort = [{ age: 4 }, { age: 8 }, { age: 2 }, { age: 9 }];
-    var sorted = arrToSort.sort(function comparator (a, b) {
-      if (a.age < b.age) return -1; // returning `-1` means "a goes before b"
-      if (a.age > b.age) return 1;  // returning  `1` means "b goes before a"
-      return 0; // returning 0 means "a and b are equivalent"
-    });
+  it('only takes an array', () => {
+    expect(bubbleSort(1)).toEqual('this is not an array');
+    expect(bubbleSort('hello')).toEqual('this is not an array');
+    expect(bubbleSort({a: 1, b:2})).toEqual('this is not an array');
+    expect(bubbleSort()).toEqual('this is not an array');
+  });
 
-    expect(sorted).toEqual([{age: 2}, {age: 4}, {age: 8}, {age: 9}]);
+  it('sorts the array in ascending order', () =>{
+    expect(bubbleSort([3, 1, 5, 2, 4])).toEqual([1,2,3,4,5]);
+  });
+
+  it('does not mutate the original array', () =>{
+    let testArr = [3, 1, 2];
+    expect(bubbleSort(testArr)).toEqual([1,2,3]);
+    expect(testArr).toEqual([3, 1, 2]);
+  });
+
+  it('is called recursively', () =>{
+    spyOn(window, 'bubbleSort').and.callThrough();
+    bubbleSort([7, 1, 2, 5, 3])
+    expect(bubbleSort.calls.count()).toBeGreaterThan(1);
+    console.log(bubbleSort.calls.count());
+  });
+
+  it('can take a comparator function', () => {
+    const comp = function (a, b){
+      return a.val > b.val ? 1 : -1;
+    };
+
+    const objList = [{val: 2}, {val: 1}, {val: 4}, {val: 3}, {val: 10}, {val: 8}];
+
+    expect(bubbleSort(objList, comp)).toEqual([{val: 1}, {val: 2}, {val: 3}, {val: 4}, {val:8}, {val: 10}]);
   });
 });
