@@ -16,3 +16,20 @@ function bubbleSort(arr){
   return arr;
 
 }
+
+function customBubble(arr, fn){
+  let swapped = false;
+  do {
+    //let current = arr[0];
+    swapped = false;
+    for(let i = 0; i < arr.length - 1; i++){
+      if(fn(arr[i], arr[i +1]) === 1){
+        const t= arr[i]
+        arr[i] =  arr[i+1];
+        arr[i + 1] = t;
+        swapped = true;
+      }
+    }
+  }while(swapped === true);
+  return arr;
+}
